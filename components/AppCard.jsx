@@ -1,4 +1,5 @@
 'use client';
+import { useDraggable } from '@dnd-kit/core';
 import { STATUSES } from '@/lib/constants';
 
 const fmtDate = d => {
@@ -13,10 +14,18 @@ const platformClass = p =>
 
 const REJECTED_ID = 'rechazado';
 
-export default function AppCard({ job, onEdit, onStatusChange }) {
+export default function AppCard({ job, onEdit, onStatusChange, dragPreview = false }) {
   const idx        = STATUSES.findIndex(s => s.id === job.estado);
   const prevStatus = idx > 0 ? STATUSES[idx - 1] : null;
   const nextStatus = STATUSES[idx + 1] ?? null;
+
+  // dragPreview: esta misma card se reutiliza como "ghost" dentro del
+  // DragOverlay mientras se arrastra — ahí no necesita quedar draggable
+  // ni clickeable, solo mostrarse.
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: job.id,
+    disabled: dragPreview,
+  });
 
   // Antes de postular el link lleva a la oferta para aplicar; una vez
   // postulado, el mismo link solo sirve para volver a revisarla.
@@ -28,7 +37,13 @@ export default function AppCard({ job, onEdit, onStatusChange }) {
   const showReject = job.estado !== REJECTED_ID && nextStatus?.id !== REJECTED_ID;
 
   return (
-    <div className="card" onClick={() => onEdit(job)}>
+    <div
+      ref={dragPreview ? undefined : setNodeRef}
+      className={`card ${isDragging ? 'card-dragging' : ''} ${dragPreview ? 'card-drag-preview' : ''}`}
+      onClick={() => !dragPreview && onEdit(job)}
+      {...(dragPreview ? {} : attributes)}
+      {...(dragPreview ? {} : listeners)}
+    >
       <div className="card-cargo">{job.cargo}</div>
       <div className="card-empresa">{job.empresa}</div>
 
