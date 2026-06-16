@@ -33,8 +33,8 @@ Browser ── /api/jobs ──► Next.js Route Handler ──► Google Apps S
 
 ### 1. El backend en Google Apps Script
 
-Necesitas un Google Sheet + un Web App de Apps Script que expongan este
-contrato (es lo que espera `lib/api.js`):
+El código del Web App está en [`apps-script/Code.gs`](apps-script/Code.gs).
+Implementa este contrato (es lo que espera `lib/api.js`):
 
 - **`GET`** → `{ "ok": true, "data": [ {...job}, ... ] }`
 - **`POST`** con body `{ "action": "create", "data": {...job} }` → crea una fila,
@@ -56,14 +56,26 @@ Cada `job` tiene esta forma (ver `lib/constants.js`):
 }
 ```
 
-Implementa esa lógica en tu propio `Code.gs` (no está en este repo porque
-vive en el editor de Apps Script de Google), despliégalo como **Web App**
-(acceso: "Cualquiera con el enlace") y copia el **Script ID** de la URL que
-te entrega — es la parte entre `/s/` y `/exec`:
+Pasos para dejarlo corriendo:
 
-```
-https://script.google.com/macros/s/AQUÍ_VA_EL_SCRIPT_ID/exec
-```
+1. Crea un Google Sheet nuevo (vacío, el script crea la hoja `Postulaciones`
+   con sus headers la primera vez que corre).
+2. Extensiones → Apps Script, borra el contenido default y pega
+   [`apps-script/Code.gs`](apps-script/Code.gs). No necesitas tocar nada del
+   Sheet ID — el script queda vinculado automáticamente al sheet desde donde
+   lo abriste.
+3. Implementar → Nueva implementación → tipo **Aplicación web**. Acceso:
+   "Cualquiera con el enlace". Al desplegar, copia la URL — el **Script ID**
+   es la parte entre `/s/` y `/exec`:
+
+   ```
+   https://script.google.com/macros/s/AQUÍ_VA_EL_SCRIPT_ID/exec
+   ```
+
+> ⚠️ No subas tu Sheet ID ni la URL completa del despliegue a ningún repo
+> público — son suficientes para que cualquiera con ellos consulte tu sheet
+> si los permisos no son los correctos. Solo el Script ID va como variable de
+> entorno (`APPS_SCRIPT_ID`), nunca en el código.
 
 ### 2. Variables de entorno
 
