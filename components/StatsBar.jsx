@@ -7,6 +7,7 @@ export default function StatsBar({ jobs }) {
   const enProceso   = jobs.filter(j => ['en_proceso', 'entrevista'].includes(j.estado)).length;
   const entrevistas = jobs.filter(j => j.estado === 'entrevista').length;
   const ofertas     = jobs.filter(j => j.estado === 'oferta').length;
+  const rechazados  = jobs.filter(j => j.estado === 'rechazado').length;
 
   const items = [
     { value: total,       label: 'Total' },
@@ -18,6 +19,8 @@ export default function StatsBar({ jobs }) {
     { value: entrevistas, label: 'Entrevistas' },
     null,
     { value: ofertas,     label: 'Ofertas 🎉' },
+    null,
+    { value: rechazados,  label: 'Rechazados ❌' },
   ];
 
   return (
