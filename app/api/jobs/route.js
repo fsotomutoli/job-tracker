@@ -1,10 +1,12 @@
-// Proxy hacia Google Apps Script — mantiene la URL del script fuera del cliente.
+// Proxy hacia Google Apps Script — mantiene el Script ID (credencial) fuera del cliente
+// y solo lo usa para construir la URL en este código server-side.
 
-const SCRIPT_URL = process.env.APPS_SCRIPT_URL;
+const SCRIPT_ID = process.env.APPS_SCRIPT_ID;
+const SCRIPT_URL = SCRIPT_ID ? `https://script.google.com/macros/s/${SCRIPT_ID}/exec` : undefined;
 
 export async function GET() {
   if (!SCRIPT_URL) {
-    return Response.json({ ok: false, error: 'APPS_SCRIPT_URL no configurada' }, { status: 500 });
+    return Response.json({ ok: false, error: 'APPS_SCRIPT_ID no configurado' }, { status: 500 });
   }
   try {
     const res = await fetch(SCRIPT_URL, { cache: 'no-store' });
@@ -17,7 +19,7 @@ export async function GET() {
 
 export async function POST(request) {
   if (!SCRIPT_URL) {
-    return Response.json({ ok: false, error: 'APPS_SCRIPT_URL no configurada' }, { status: 500 });
+    return Response.json({ ok: false, error: 'APPS_SCRIPT_ID no configurado' }, { status: 500 });
   }
   try {
     const body = await request.json();
