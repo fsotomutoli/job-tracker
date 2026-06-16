@@ -1,7 +1,7 @@
 'use client';
 import { STATUSES, PLATFORMS } from '@/lib/constants';
 
-export default function Controls({ search, setSearch, filterPlat, setFilterPlat, filterStatus, setFilterStatus, onAdd, onExport }) {
+export default function Controls({ search, setSearch, filterPlat, setFilterPlat, filterStatus, setFilterStatus, sortFit, setSortFit, onAdd, onExport }) {
   return (
     <div className="controls">
       <input
@@ -29,6 +29,16 @@ export default function Controls({ search, setSearch, filterPlat, setFilterPlat,
         {STATUSES.map(s => (
           <option key={s.id} value={s.id}>{s.emoji} {s.label}</option>
         ))}
+      </select>
+
+      <select
+        className="filter-select"
+        value={sortFit}
+        onChange={e => setSortFit(e.target.value)}
+      >
+        <option value="">Sin ordenar</option>
+        <option value="desc">Fit: mayor a menor</option>
+        <option value="asc">Fit: menor a mayor</option>
       </select>
 
       <div className="spacer" />
