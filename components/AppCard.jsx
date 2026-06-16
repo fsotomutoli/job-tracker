@@ -1,6 +1,7 @@
 'use client';
 import { useDraggable } from '@dnd-kit/core';
 import { STATUSES } from '@/lib/constants';
+import FitGauge from './FitGauge';
 
 const fmtDate = d => {
   if (!d) return '';
@@ -36,6 +37,10 @@ export default function AppCard({ job, onEdit, onStatusChange, dragPreview = fal
   // apunta a rechazado (pasa al llegar desde "Oferta"), para no duplicar.
   const showReject = job.estado !== REJECTED_ID && nextStatus?.id !== REJECTED_ID;
 
+  // Postulaciones creadas antes de agregar este campo no tienen "fit" — no
+  // mostramos el medidor en ese caso en vez de dibujar un círculo en 0.
+  const hasFit = job.fit !== undefined && job.fit !== null && job.fit !== '';
+
   return (
     <div
       ref={dragPreview ? undefined : setNodeRef}
@@ -44,8 +49,13 @@ export default function AppCard({ job, onEdit, onStatusChange, dragPreview = fal
       {...(dragPreview ? {} : attributes)}
       {...(dragPreview ? {} : listeners)}
     >
-      <div className="card-cargo">{job.cargo}</div>
-      <div className="card-empresa">{job.empresa}</div>
+      <div className="card-head">
+        <div>
+          <div className="card-cargo">{job.cargo}</div>
+          <div className="card-empresa">{job.empresa}</div>
+        </div>
+        {hasFit && <FitGauge fit={job.fit} />}
+      </div>
 
       <div className="card-meta">
         <span className={`badge ${platformClass(job.plataforma)}`}>{job.plataforma}</span>

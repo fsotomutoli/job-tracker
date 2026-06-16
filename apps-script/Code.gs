@@ -7,7 +7,9 @@
 const SHEET_NAME = 'Postulaciones';
 const HEADERS = [
   'id', 'cargo', 'empresa', 'plataforma', 'link',
-  'fechaPostulacion', 'modalidad', 'sueldo', 'estado', 'notas', 'createdAt'
+  'fechaPostulacion', 'modalidad', 'sueldo', 'estado', 'notas', 'createdAt',
+  'fit' // 0-100, medidor de fit en la card. Agregado al final para no
+        // reordenar columnas existentes en sheets ya en uso.
 ];
 
 function getSheet() {

@@ -79,11 +79,18 @@ export default function AppModal({ initial, onSave, onClose, onDelete, saving })
                 placeholder="2.4M–2.6M CLP" />
             </div>
             <div className="form-group">
-              <label className="form-label">Link vacante</label>
-              <input className="form-input" value={form.link}
-                onChange={e => set('link', e.target.value)}
-                placeholder="https://..." />
+              <label className="form-label">Fit (0-100)</label>
+              <input type="number" min="0" max="100" className="form-input" value={form.fit}
+                onChange={e => set('fit', e.target.value)}
+                placeholder="80" />
             </div>
+          </div>
+
+          <div className="form-group full">
+            <label className="form-label">Link vacante</label>
+            <input className="form-input" value={form.link}
+              onChange={e => set('link', e.target.value)}
+              placeholder="https://..." />
           </div>
 
           <div className="form-group">

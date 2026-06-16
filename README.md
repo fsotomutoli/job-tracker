@@ -53,6 +53,7 @@ Cada `job` tiene esta forma (ver `lib/constants.js`):
   link, fechaPostulacion, modalidad,    // 'Híbrido' | 'Presencial' | 'Remoto'
   sueldo, estado,                       // ver STATUSES en lib/constants.js
   notas, createdAt,
+  fit,                                   // 0-100, opcional — medidor de fit en la card
 }
 ```
 
