@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import StatsBar    from '@/components/StatsBar';
 import Controls    from '@/components/Controls';
 import KanbanBoard from '@/components/KanbanBoard';
@@ -33,6 +34,7 @@ function exportCSV(jobs) {
 // ── Page component ─────────────────────────────────────────────────────────
 
 export default function Home() {
+  const router = useRouter();
   const [jobs,         setJobs]         = useState([]);
   const [loading,      setLoading]      = useState(true);
   const [error,        setError]        = useState(null);
@@ -102,6 +104,12 @@ export default function Home() {
     }
   }
 
+  async function handleLogout() {
+    await fetch('/api/logout', { method: 'POST' });
+    router.replace('/login');
+    router.refresh();
+  }
+
   // ── Filter
   const filtered = jobs.filter(j => {
     const q = search.toLowerCase();
@@ -150,6 +158,7 @@ export default function Home() {
         </div>
         <div className="header-actions">
           <button className="btn btn-ghost-white" onClick={loadJobs}>↺ Actualizar</button>
+          <button className="btn btn-ghost-white" onClick={handleLogout}>Salir</button>
         </div>
       </header>
 
