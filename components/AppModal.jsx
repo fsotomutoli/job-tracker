@@ -33,7 +33,7 @@ export default function AppModal({ initial, onSave, onClose, onDelete, saving })
               <label className="form-label">Empresa *</label>
               <input className="form-input" value={form.empresa}
                 onChange={e => set('empresa', e.target.value)}
-                placeholder="Banco BCI" />
+                placeholder="Google" />
             </div>
           </div>
 
