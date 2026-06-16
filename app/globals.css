@@ -151,6 +151,8 @@ body {
   text-overflow: ellipsis; padding: 0 4px;
 }
 .card-btn:hover       { background: var(--accent); color: white; border-color: var(--accent); }
+.card-btn-reject      { color: #ef4444; border-color: #fecaca; }
+.card-btn-reject:hover { background: #ef4444; color: white; border-color: #ef4444; }
 
 /* ── Modal ── */
 .overlay {
