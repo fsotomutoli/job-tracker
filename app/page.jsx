@@ -43,6 +43,7 @@ export default function Home() {
   const [search,       setSearch]       = useState('');
   const [filterPlat,   setFilterPlat]   = useState('');
   const [filterStatus, setFilterStatus] = useState('');
+  const [sortFit,      setSortFit]      = useState('');   // '' | 'desc' | 'asc'
 
   // ── Load
   const loadJobs = useCallback(async () => {
@@ -120,6 +121,15 @@ export default function Home() {
     );
   });
 
+  // ── Sort (por fit dentro de cada columna; sin fit siempre al final)
+  const sorted = sortFit ? [...filtered].sort((a, b) => {
+    const fa = a.fit === '' || a.fit == null ? null : Number(a.fit);
+    const fb = b.fit === '' || b.fit == null ? null : Number(b.fit);
+    if (fa == null) return fb == null ? 0 : 1;
+    if (fb == null) return -1;
+    return sortFit === 'desc' ? fb - fa : fa - fb;
+  }) : filtered;
+
   // ── Render
   if (loading) return (
     <>
@@ -168,12 +178,13 @@ export default function Home() {
         search={search}           setSearch={setSearch}
         filterPlat={filterPlat}   setFilterPlat={setFilterPlat}
         filterStatus={filterStatus} setFilterStatus={setFilterStatus}
+        sortFit={sortFit}         setSortFit={setSortFit}
         onAdd={() => setModal('new')}
         onExport={() => exportCSV(jobs)}
       />
 
       <KanbanBoard
-        jobs={filtered}
+        jobs={sorted}
         onEdit={setModal}
         onStatusChange={handleStatusChange}
       />
