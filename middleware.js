@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { AUTH_COOKIE } from '@/lib/auth';
+import { AUTH_COOKIE } from '@/lib/authConstants';
 import { getExpectedTokenEdge } from '@/lib/auth-edge';
 
 // Protege todo el sitio (página + API de jobs) con una contraseña compartida.
