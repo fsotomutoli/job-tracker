@@ -97,7 +97,8 @@ body {
   min-height: calc(100vh - 172px);
   align-items: flex-start;
 }
-.column     { min-width: 255px; width: 255px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; }
+.column     { min-width: 255px; width: 255px; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; border-radius: 10px; transition: background 0.12s; }
+.column-over { background: rgba(59,130,246,0.08); outline: 2px dashed var(--accent); outline-offset: 4px; }
 .col-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 9px 12px; border-radius: 10px;
@@ -113,10 +114,16 @@ body {
 /* ── Card ── */
 .card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; padding: 13px; cursor: pointer;
+  border-radius: 10px; padding: 13px; cursor: grab;
   transition: box-shadow 0.15s, transform 0.1s;
+  touch-action: none; /* deja que el sensor de drag maneje el gesto en mobile */
 }
 .card:hover           { box-shadow: 0 4px 14px rgba(0,0,0,0.08); transform: translateY(-1px); }
+.card-dragging         { opacity: 0.35; }
+.card-drag-preview     {
+  cursor: grabbing; box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+  transform: rotate(-1.5deg); width: 255px;
+}
 .card-cargo           { font-size: 14px; font-weight: 600; margin-bottom: 3px; line-height: 1.3; }
 .card-empresa         { font-size: 13px; color: var(--text-secondary); margin-bottom: 9px; }
 .card-meta            { display: flex; gap: 5px; flex-wrap: wrap; }
