@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { STATUSES, PLATFORMS, MODALITIES, EMPTY_FORM } from '@/lib/constants';
 
-export default function AppModal({ initial, onSave, onClose, onDelete, saving }) {
+export default function AppModal({ initial, onSave, onClose, onDiscard, saving }) {
   const today = new Date().toISOString().slice(0, 10);
   const [form, setForm] = useState(
     initial ?? { ...EMPTY_FORM, fechaPostulacion: today }
@@ -103,12 +103,12 @@ export default function AppModal({ initial, onSave, onClose, onDelete, saving })
           {isEdit && (
             <div className="delete-zone">
               {!confirmDel
-                ? <button className="btn btn-danger-soft" onClick={() => setConfirmDel(true)}>
-                    🗑 Eliminar postulación
+                ? <button className="btn btn-discard" onClick={() => setConfirmDel(true)}>
+                    🚫 No me interesa
                   </button>
                 : <div className="confirm-row">
-                    <span className="confirm-msg">¿Eliminar?</span>
-                    <button className="btn btn-danger-soft" onClick={onDelete}>Sí, eliminar</button>
+                    <span className="confirm-msg">¿Descartar esta oferta?</span>
+                    <button className="btn btn-discard" onClick={onDiscard}>Sí, descartar</button>
                     <button className="btn btn-ghost" onClick={() => setConfirmDel(false)}>Cancelar</button>
                   </div>
               }

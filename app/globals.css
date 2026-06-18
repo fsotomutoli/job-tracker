@@ -88,6 +88,7 @@ body {
 .btn-ghost          { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); }
 .btn-ghost-white    { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: white; }
 .btn-danger-soft    { background: #fee2e2; color: #ef4444; border: none; }
+.btn-discard        { background: #fef3c7; color: #b45309; border: none; }
 
 /* ── Kanban ── */
 .kanban {
@@ -210,6 +211,51 @@ body {
   display: flex; align-items: center; justify-content: center;
   height: calc(100vh - 172px); flex-direction: column; gap: 12px;
   color: var(--text-secondary); font-size: 14px;
+}
+
+/* ── Nav tabs ── */
+.nav-tabs {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex;
+  gap: 0;
+}
+.nav-tab {
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-tab:hover      { color: var(--text-primary); }
+.nav-tab-active     { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ── Descartadas ── */
+.discard-page   { padding: 24px; max-width: 1100px; margin: 0 auto; }
+.discard-header { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+.discard-title  { font-size: 20px; font-weight: 700; }
+.discard-count  { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+.discard-hint   { font-size: 13px; color: var(--text-secondary); margin-bottom: 24px; }
+.discard-grid   {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+  gap: 14px;
+}
+.discard-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px;
+  display: flex; flex-direction: column;
+  opacity: 0.85;
+}
+.discard-actions {
+  display: flex; gap: 6px; margin-top: 12px;
+  padding-top: 10px; border-top: 1px solid var(--border);
 }
 
 /* ── Login ── */
