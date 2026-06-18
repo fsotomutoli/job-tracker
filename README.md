@@ -23,6 +23,17 @@ Browser ── /api/jobs ──► Next.js Route Handler ──► Google Apps S
   (`APP_PASSWORD`), implementada en `middleware.js`. Sin sesión válida,
   cualquier ruta redirige a `/login` (páginas) o responde `401` (API).
 
+## Funcionalidades
+
+- **Tablero Kanban** con columnas por estado (Interesado → Postulado → En proceso → Entrevista → Oferta → Rechazado)
+- **Drag & drop** para mover cards entre columnas
+- **Medidor de fit** (0–100) en cada card con color por banda
+- **Ordenar por fit** dentro de cada columna
+- **Pestaña "No me interesa"** (`/descartadas`): descarta ofertas sin borrarlas del Sheet, evitando que un script de auto-fetch las vuelva a agregar; con opción de restaurar o eliminar definitivamente
+- **Exportar CSV** con todas las postulaciones
+- **Filtros** por plataforma, estado y búsqueda de texto libre
+- **Barra de métricas** con contadores por estado
+
 ## Stack
 
 - [Next.js 14](https://nextjs.org) (App Router, JavaScript)
@@ -51,11 +62,13 @@ Cada `job` tiene esta forma (ver `lib/constants.js`):
 {
   id, cargo, empresa, plataforma,       // 'LinkedIn' | 'GetOnBoard' | 'Otro'
   link, fechaPostulacion, modalidad,    // 'Híbrido' | 'Presencial' | 'Remoto'
-  sueldo, estado,                       // ver STATUSES en lib/constants.js
+  sueldo, estado,                       // ver STATUSES en lib/constants.js + 'no_interesa'
   notas, createdAt,
   fit,                                   // 0-100, opcional — medidor de fit en la card
 }
 ```
+
+> **`estado: 'no_interesa'`**: estado especial para ofertas descartadas. No aparece en el tablero Kanban sino en `/descartadas`. Si tu script de auto-fetch revisa los registros existentes antes de insertar, debes incluir las filas con este estado en el chequeo por `link` para que no las vuelva a agregar.
 
 Pasos para dejarlo corriendo:
 
