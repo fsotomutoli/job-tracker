@@ -1,12 +1,13 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import StatsBar    from '@/components/StatsBar';
 import Controls    from '@/components/Controls';
 import KanbanBoard from '@/components/KanbanBoard';
 import AppModal    from '@/components/AppModal';
 import { fetchJobs, createJob, updateJob, deleteJob } from '@/lib/api';
-import { STATUSES } from '@/lib/constants';
+import { STATUSES, DISCARD_STATUS } from '@/lib/constants';
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 
@@ -81,14 +82,16 @@ export default function Home() {
     }
   }
 
-  async function handleDelete() {
+  async function handleDiscard() {
+    const job     = jobs.find(j => j.id === modal.id);
+    const updated = { ...job, estado: DISCARD_STATUS };
     setSaving(true);
     try {
-      await deleteJob(modal.id);
+      await updateJob(updated);
       setJobs(prev => prev.filter(j => j.id !== modal.id));
       setModal(null);
     } catch (e) {
-      alert('Error eliminando: ' + e.message);
+      alert('Error descartando: ' + e.message);
     } finally {
       setSaving(false);
     }
@@ -111,8 +114,9 @@ export default function Home() {
     router.refresh();
   }
 
-  // ── Filter
+  // ── Filter (excluye descartadas — tienen su propia página)
   const filtered = jobs.filter(j => {
+    if (j.estado === DISCARD_STATUS) return false;
     const q = search.toLowerCase();
     return (
       (!q || j.cargo.toLowerCase().includes(q) || j.empresa.toLowerCase().includes(q)) &&
@@ -172,6 +176,11 @@ export default function Home() {
         </div>
       </header>
 
+      <nav className="nav-tabs">
+        <span className="nav-tab nav-tab-active">Postulaciones</span>
+        <Link href="/descartadas" className="nav-tab">No me interesa</Link>
+      </nav>
+
       <StatsBar jobs={jobs} />
 
       <Controls
@@ -194,7 +203,7 @@ export default function Home() {
           initial={modal === 'new' ? null : modal}
           onSave={handleSave}
           onClose={() => setModal(null)}
-          onDelete={handleDelete}
+          onDiscard={handleDiscard}
           saving={saving}
         />
       )}
